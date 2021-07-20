@@ -24,7 +24,7 @@ RSpec.describe ProviderInterface::OrganisationPermissionsSetupWizard do
       let(:wizard_attrs) do
         {
           relationship_ids: relationship_ids,
-          current_relationship_id: relationship_ids.last
+          current_relationship_id: relationship_ids.last,
         }
       end
 
@@ -47,6 +47,7 @@ RSpec.describe ProviderInterface::OrganisationPermissionsSetupWizard do
         {
           relationship_ids: relationship_ids,
           provider_relationship_attrs: provider_relationship_attrs,
+          current_relationship_id: relationship_ids.first,
         }
       end
 
@@ -60,6 +61,48 @@ RSpec.describe ProviderInterface::OrganisationPermissionsSetupWizard do
         expect(current_relationship.ratifying_provider_can_view_safeguarding_information).to eq(true)
         expect(current_relationship.training_provider_can_view_diversity_information).to eq(true)
         expect(current_relationship.ratifying_provider_can_view_diversity_information).to eq(false)
+      end
+    end
+  end
+
+  describe '#next_step' do
+    context 'when there is a relationship next in the list' do
+      let(:wizard_attrs) do
+        {
+          relationship_ids: relationship_ids,
+          current_relationship_id: relationship_ids.first,
+        }
+      end
+
+      it 'returns :relationship and the id of the next relationship' do
+        expect(wizard.next_step).to eq([:relationship, relationship_ids.second])
+      end
+    end
+
+    context 'when there are no further relationships in the list' do
+      let(:wizard_attrs) do
+        {
+          relationship_ids: relationship_ids,
+          current_relationship_id: relationship_ids.last,
+        }
+      end
+
+      it 'returns :check' do
+        expect(wizard.next_step).to eq([:check])
+      end
+    end
+
+    context 'when checking_answers is true' do
+      let(:wizard_attrs) do
+        {
+          relationship_ids: relationship_ids,
+          current_relationship_id: relationship_ids.first,
+          checking_answers: true,
+        }
+      end
+
+      it 'returns :check' do
+        expect(wizard.next_step).to eq([:check])
       end
     end
   end
