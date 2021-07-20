@@ -165,26 +165,6 @@ RSpec.describe 'Vendor API - POST /api/v1/applications/:application_id/offer', t
       expect(logged_error).to eq('NotAuthorisedError')
     end
 
-    it 'returns an error when specifying a course that is not open on Apply' do
-      application_choice = create_application_choice_for_currently_authenticated_provider(
-        status: 'awaiting_provider_decision',
-      )
-
-      course = create(:course, provider: currently_authenticated_provider)
-      other_course_option = course_option_for_provider(provider: currently_authenticated_provider, course: course)
-
-      post_api_request "/api/v1/applications/#{application_choice.id}/offer", params: {
-        'data' => {
-          'conditions' => [],
-          'course' => course_option_to_course_payload(other_course_option),
-        },
-      }
-
-      expect(response).to have_http_status(422)
-      expect(parsed_response).to be_valid_against_openapi_schema('UnprocessableEntityResponse')
-      expect(error_response['message']).to match 'The requested course is not open for applications via the Apply service'
-    end
-
     it 'returns an error when specifying a course that does not exist' do
       application_choice = create_application_choice_for_currently_authenticated_provider(
         status: 'awaiting_provider_decision',
