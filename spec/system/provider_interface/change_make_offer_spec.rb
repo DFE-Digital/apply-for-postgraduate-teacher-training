@@ -151,12 +151,13 @@ RSpec.feature 'Provider makes an offer' do
     create(:provider_permissions, provider: @selected_provider, provider_user: provider_user, make_decisions: true)
     courses = [create(:course, :open_on_apply, study_mode: :full_time_or_part_time, provider: @selected_provider, accredited_provider: ratifying_provider),
                create(:course, :open_on_apply, study_mode: :full_time_or_part_time, provider: @selected_provider, accredited_provider: ratifying_provider)]
-    @selected_course = courses.sample
+    @selected_course, other_course = courses.sample(2)
 
     course_options = [create(:course_option, :part_time, course: @selected_course),
                       create(:course_option, :full_time, course: @selected_course),
                       create(:course_option, :full_time, course: @selected_course),
                       create(:course_option, :part_time, course: @selected_course)]
+    create(:course_option, :part_time, course: other_course)
 
     create(
       :provider_relationship_permissions,
