@@ -21,9 +21,9 @@ RSpec.describe ProviderInterface::OrganisationPermissionsSetupListComponent do
   end
 
   it 'renders a button with the correct path' do
-    form = render.css('form').first
-    expect(form.attributes['action'].value).to eq(path)
-    expect(form.css('input').first.attributes['value'].value).to eq('Set up organisation permissions')
+    continue_link = render.css('a').first
+    expect(continue_link.attributes['href'].value).to eq(path)
+    expect(continue_link.text).to eq('Set up organisation permissions')
   end
 
   context 'when there is a single main provider' do
