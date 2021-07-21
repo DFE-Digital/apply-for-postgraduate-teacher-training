@@ -106,4 +106,61 @@ RSpec.describe ProviderInterface::OrganisationPermissionsSetupWizard do
       end
     end
   end
+
+  describe '#previous_step' do
+    context 'when there is a relationship before the current one in the list' do
+      let(:wizard_attrs) do
+        {
+          relationship_ids: relationship_ids,
+          current_relationship_id: relationship_ids.second,
+          current_step: :relationship,
+        }
+      end
+
+      it 'returns :relationship and the id of the previous relationship' do
+        expect(wizard.previous_step).to eq([:relationship, relationship_ids.first])
+      end
+    end
+
+    context 'when the current relationship is the first' do
+      let(:wizard_attrs) do
+        {
+          relationship_ids: relationship_ids,
+          current_relationship_id: relationship_ids.first,
+          current_step: :relationship,
+        }
+      end
+
+      it 'returns nil' do
+        expect(wizard.previous_step).to be_nil
+      end
+    end
+
+    context 'when the current step is :check' do
+      let(:wizard_attrs) do
+        {
+          relationship_ids: relationship_ids,
+          current_step: :check,
+        }
+      end
+
+      it 'returns :relationship and the id of the last relationship' do
+        expect(wizard.previous_step).to eq([:relationship, relationship_ids.last])
+      end
+    end
+
+    context 'when checking_answers is true' do
+      let(:wizard_attrs) do
+        {
+          relationship_ids: relationship_ids,
+          current_relationship_id: relationship_ids.first,
+          checking_answers: true,
+        }
+      end
+
+      it 'returns :check' do
+        expect(wizard.previous_step).to eq([:check])
+      end
+    end
+  end
 end

@@ -3,7 +3,7 @@ module ProviderInterface
     include ActiveModel::Model
     include ProviderRelationshipPermissionsParamsHelper
 
-    attr_accessor :relationship_ids, :current_relationship_id, :checking_answers
+    attr_accessor :relationship_ids, :current_relationship_id, :current_step, :checking_answers
     attr_writer :state_store, :provider_relationship_attrs
 
     def initialize(state_store, attrs = {})
@@ -24,6 +24,14 @@ module ProviderInterface
       [:relationship, next_relationship_id]
     end
 
+    def previous_step
+      return [:relationship, relationship_ids.last] if current_step == :check
+
+      return [:check] if checking_answers
+
+      [:relationship, previous_relationship_id] if previous_relationship_id.present?
+    end
+
     def save_state!
       @state_store.write(state)
     end
@@ -37,6 +45,13 @@ module ProviderInterface
     def next_relationship_id
       next_relationship_index = relationship_ids.find_index(current_relationship_id.to_i) + 1
       relationship_ids[next_relationship_index]
+    end
+
+    def previous_relationship_id
+      previous_relationship_index = relationship_ids.find_index(current_relationship_id.to_i) - 1
+      return nil if previous_relationship_index < 0
+
+      relationship_ids[previous_relationship_index]
     end
 
     def provider_relationship_attrs
