@@ -1,7 +1,7 @@
 <%= form_with(
   model: permission_model,
   url: form_url,
-  method: form_method,
+  method: :patch,
 ) do |f| %>
   <%= f.govuk_error_summary %>
 
