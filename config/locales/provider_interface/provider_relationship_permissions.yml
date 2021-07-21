@@ -22,6 +22,9 @@ en:
     organisation_permissions_setup:
       index:
         title: Set up organisation permissions
+      check:
+        title: Check and save organisation permissions
+        caption: Set up organisation permissions
     organisation_permissions_setup_list_component:
       single:
         introduction: 'Candidates can now apply through GOV.UK for courses %{provider_name} works on with:'

@@ -18,6 +18,7 @@ module ProviderInterface
         organisation_permissions_wizard_store,
         current_relationship_id: params[:id],
         current_step: :relationship,
+        checking_answers: params[:checking_answers] == 'true',
       )
       wizard.save_state!
 
@@ -44,6 +45,12 @@ module ProviderInterface
       else
         redirect_to check_provider_interface_organisation_permissions_setup_index_path
       end
+    end
+
+    def check
+      wizard = OrganisationPermissionsSetupWizard.new(organisation_permissions_wizard_store, current_step: :check)
+      @relationships = wizard.relationships
+      @previous_page_path = previous_page_path(wizard)
     end
 
   private

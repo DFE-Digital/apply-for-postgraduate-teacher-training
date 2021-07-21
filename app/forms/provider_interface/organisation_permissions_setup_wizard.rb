@@ -10,12 +10,12 @@ module ProviderInterface
       @state_store = state_store
 
       super(last_saved_state.deep_merge(attrs))
+
+      self.checking_answers = false if current_step == :check
     end
 
     def current_relationship
-      relationship = ProviderRelationshipPermissions.find(current_relationship_id)
-      assign_wizard_attrs_to_relationship(relationship)
-      relationship
+      build_relationship_for_id(current_relationship_id)
     end
 
     def next_step
@@ -40,7 +40,17 @@ module ProviderInterface
       @state_store.delete
     end
 
+    def relationships
+      relationship_ids.map { |id| build_relationship_for_id(id) }
+    end
+
   private
+
+    def build_relationship_for_id(id)
+      relationship = ProviderRelationshipPermissions.find(id)
+      assign_wizard_attrs_to_relationship(relationship)
+      relationship
+    end
 
     def next_relationship_id
       next_relationship_index = relationship_ids.find_index(current_relationship_id.to_i) + 1
