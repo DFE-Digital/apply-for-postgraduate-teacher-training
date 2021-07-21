@@ -22,6 +22,7 @@ module ProviderInterface
       wizard.save_state!
 
       @current_relationship = wizard.current_relationship
+      @previous_page_path = previous_page_path(wizard)
     end
 
     def update
@@ -76,6 +77,17 @@ module ProviderInterface
     end
 
     helper_method :current_relationship_description
+
+    def previous_page_path(wizard)
+      previous_step, previous_relationship_id = wizard.previous_step
+      if previous_step == :relationship
+        edit_provider_interface_organisation_permissions_setup_path(previous_relationship_id)
+      elsif previous_step == :check
+        check_provider_interface_organisation_permissions_setup_index_path
+      else
+        provider_interface_organisation_permissions_setup_index_path
+      end
+    end
 
     def relationship_hash
       { params[:id] => permissions_params }
