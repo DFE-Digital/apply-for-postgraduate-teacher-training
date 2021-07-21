@@ -14,7 +14,11 @@ module ProviderInterface
     end
 
     def edit
-      wizard = OrganisationPermissionsSetupWizard.new(organisation_permissions_wizard_store, current_relationship_id: params[:id])
+      wizard = OrganisationPermissionsSetupWizard.new(
+        organisation_permissions_wizard_store,
+        current_relationship_id: params[:id],
+        current_step: :relationship,
+      )
       wizard.save_state!
 
       @current_relationship = wizard.current_relationship
@@ -24,6 +28,7 @@ module ProviderInterface
       wizard = OrganisationPermissionsSetupWizard.new(
         organisation_permissions_wizard_store,
         current_relationship_id: params[:id],
+        current_step: :relationship,
         provider_relationship_attrs: relationship_hash,
       )
 
