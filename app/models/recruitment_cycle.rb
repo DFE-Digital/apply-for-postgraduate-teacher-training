@@ -21,7 +21,7 @@ module RecruitmentCycle
   end
 
   def self.years_visible_in_support
-    [2021, 2020, 2019]
+    [2022, 2021, 2020, 2019]
   end
 
   def self.cycle_name(year = current_year)

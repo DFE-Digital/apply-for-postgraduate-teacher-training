@@ -10,6 +10,11 @@ class Clock
 
   # More-than-hourly jobs
   every(10.minutes, 'IncrementalSyncAllFromTeacherTrainingPublicAPI') { TeacherTrainingPublicAPI::SyncAllProvidersAndCoursesWorker.perform_async }
+  every(10.minutes, 'IncrementalSyncNextCycleFromTeacherTrainingPublicAPI') do
+    if FeatureFlag.active?(:sync_next_cycle)
+      TeacherTrainingPublicAPI::SyncAllProvidersAndCoursesWorker.perform_async(true, RecruitmentCycle.next_year)
+    end
+  end
 
   # Hourly jobs
   every(1.hour, 'RejectApplicationsByDefault', at: '**:10') { RejectApplicationsByDefaultWorker.perform_async }
@@ -49,5 +54,14 @@ class Clock
 
   every(1.day, 'SendEocDeadlineReminderEmailToCandidatesWorker', at: '12:00') { SendEocDeadlineReminderEmailToCandidatesWorker.new.perform }
 
-  every(3.days, 'FullSyncAllFromTeacherTrainingPublicAPI', at: '00:59') { TeacherTrainingPublicAPI::SyncAllProvidersAndCoursesWorker.perform_async(false) }
+  every(3.days, 'FullSyncAllFromTeacherTrainingPublicAPI', at: '00:59') do
+    TeacherTrainingPublicAPI::SyncAllProvidersAndCoursesWorker.perform_async(false)
+  end
+
+  every(3.days, 'FullSyncNextCycleFromTeacherTrainingPublicAPI', at: '02:59') do
+    if FeatureFlag.active?(:sync_next_cycle)
+      TeacherTrainingPublicAPI::SyncAllProvidersAndCoursesWorker.perform_async(false, RecruitmentCycle.next_year)
+    end
+  end
+
 end
