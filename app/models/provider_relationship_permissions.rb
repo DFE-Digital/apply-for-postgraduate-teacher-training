@@ -4,7 +4,7 @@ class ProviderRelationshipPermissions < ApplicationRecord
 
   PERMISSIONS = %i[make_decisions view_safeguarding_information view_diversity_information].freeze
 
-  validate :at_least_one_active_permission_in_pair, if: -> { setup_at.present? }
+  validate :at_least_one_active_permission_in_pair, if: -> { setup_at.present? || validation_context == :setup }
   audited associated_with: :training_provider
 
   def self.all_relationships_for_providers(providers)
