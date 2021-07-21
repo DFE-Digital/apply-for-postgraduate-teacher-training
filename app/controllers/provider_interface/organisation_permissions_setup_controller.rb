@@ -15,8 +15,29 @@ module ProviderInterface
 
     def edit
       wizard = OrganisationPermissionsSetupWizard.new(organisation_permissions_wizard_store, current_relationship_id: params[:id])
+      wizard.save_state!
+
       @current_relationship = wizard.current_relationship
-      @current_relationship_description = ProviderRelationshipPermissionAsProviderUserPresenter.new(@current_relationship, current_provider_user).provider_relationship_description
+    end
+
+    def update
+      wizard = OrganisationPermissionsSetupWizard.new(
+        organisation_permissions_wizard_store,
+        current_relationship_id: params[:id],
+        provider_relationship_attrs: relationship_hash,
+      )
+
+      @current_relationship = wizard.current_relationship
+      render :edit and return if @current_relationship.invalid?(:setup)
+
+      wizard.save_state!
+
+      next_step, next_relationship_id = wizard.next_step
+      if next_step == :relationship
+        redirect_to edit_provider_interface_organisation_permissions_setup_path(next_relationship_id)
+      else
+        redirect_to check_provider_interface_organisation_permissions_setup_index_path
+      end
     end
 
   private
@@ -43,6 +64,25 @@ module ProviderInterface
     def organisation_permissions_wizard_store
       key = "organisation_permissions_wizard_store_#{current_provider_user.id}"
       WizardStateStores::RedisStore.new(key: key)
+    end
+
+    def current_relationship_description
+      ProviderRelationshipPermissionAsProviderUserPresenter.new(@current_relationship, current_provider_user).provider_relationship_description
+    end
+
+    helper_method :current_relationship_description
+
+    def relationship_hash
+      { params[:id] => permissions_params }
+    end
+
+    def permissions_params
+      return {} unless params.key?(:provider_relationship_permissions)
+
+      params.require(:provider_relationship_permissions)
+            .permit(make_decisions: [],
+                    view_safeguarding_information: [],
+                    view_diversity_information: []).to_h
     end
   end
 end
