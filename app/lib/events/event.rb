@@ -81,6 +81,10 @@ module Events
 
     def hash_to_kv_pairs(hash)
       hash.map do |(key, value)|
+        if value.in? [true, false]
+          value = value.to_s
+        end
+
         { 'key' => key, 'value' => Array.wrap(value) }
       end
     end

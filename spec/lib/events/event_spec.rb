@@ -55,6 +55,14 @@ RSpec.describe Events::Event do
     end
   end
 
+  describe 'data pairs' do
+    it 'converts booleans to strings' do
+      event = Events::Event.new
+      output = event.with_data(key: true).as_json
+      expect(output['data'].first['value']).to eq ['true']
+    end
+  end
+
   def fake_request(overrides = {})
     attrs = {
       uuid: '123',
