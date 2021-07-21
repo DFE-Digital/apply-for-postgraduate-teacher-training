@@ -1,3 +1,32 @@
 shared:
   candidates:
     - created_at
+  application_choices:
+    - created_at
+    - accepted_at
+    - application_form_id
+    - conditions_not_met_at
+    - course_option_id
+    - current_course_option_id
+    - decline_by_default_at
+    - decline_by_default_days
+    - declined_at
+    - declined_by_default
+    - id
+    - offer_changed_at
+    - offer_deferred_at
+    - offer_withdrawn_at
+    - offered_at
+    - recruited_at
+    - reject_by_default_at
+    - reject_by_default_days
+    - reject_by_default_feedback_sent_at
+    - rejected_at
+    - rejected_by_default
+    - sent_to_provider_at
+    - status
+    - status_before_deferral
+    - structured_rejection_reasons
+    - updated_at
+    - withdrawal_feedback
+    - withdrawn_at
