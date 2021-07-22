@@ -149,6 +149,20 @@ RSpec.describe StateChangeNotifier do
       end
     end
 
+    context ':withdrawn_at_candidates_request' do
+      let(:application_choice) { create(:application_choice, :withdrawn, application_form: application_form) }
+
+      it 'sends a job to the worker when all applications are withdrawn at candidate\'s request' do
+        create(:withdrawn_at_candidates_request_audit, application_choice: withdrawn_choice)
+        create(:withdrawn_at_candidates_request_audit, application_choice: application_choice)
+
+        StateChangeNotifier.new(:withdrawn_at_candidates_request, application_choice).application_outcome_notification
+
+        message = /:runner: #{applicant} requested that their applications be withdrawn from #{provider_name} and #{withdrawn_choice.provider.name}/
+        expect(SlackNotificationWorker).to have_received(:perform_async).with(message, anything)
+      end
+    end
+
     context 'any last action with random other application state combinations' do
       let(:status_params) do
         {
@@ -160,7 +174,7 @@ RSpec.describe StateChangeNotifier do
       let(:application_choice) { create(:application_choice, application_form: application_form) }
 
       it 'other applications have been rejected' do
-        status = (StateChangeNotifier::APPLICATION_OUTCOME_EVENTS - %i[rejected]).sample
+        status = (StateChangeNotifier::APPLICATION_OUTCOME_EVENTS - %i[rejected withdrawn_at_candidates_request]).sample
         params = status_params.key?(status) ? status_params[status] : { status: status }
         application_choice.update(params)
 
@@ -173,7 +187,7 @@ RSpec.describe StateChangeNotifier do
       end
 
       it 'other applications have been declined' do
-        status = (StateChangeNotifier::APPLICATION_OUTCOME_EVENTS - %i[declined]).sample
+        status = (StateChangeNotifier::APPLICATION_OUTCOME_EVENTS - %i[declined withdrawn_at_candidates_request]).sample
         params = status_params.key?(status) ? status_params[status] : { status: status }
         application_choice.update(params)
 
@@ -186,7 +200,7 @@ RSpec.describe StateChangeNotifier do
       end
 
       it 'other applications have been withdrawn' do
-        status = (StateChangeNotifier::APPLICATION_OUTCOME_EVENTS - %i[withdrawn]).sample
+        status = (StateChangeNotifier::APPLICATION_OUTCOME_EVENTS - %i[withdrawn withdrawn_at_candidates_request]).sample
         params = status_params.key?(status) ? status_params[status] : { status: status }
         application_choice.update(params)
 
@@ -199,7 +213,7 @@ RSpec.describe StateChangeNotifier do
       end
 
       it 'other applications have been rejected, declined and withdrawn' do
-        status = (StateChangeNotifier::APPLICATION_OUTCOME_EVENTS - %i[withdrawn rejected declined]).sample
+        status = (StateChangeNotifier::APPLICATION_OUTCOME_EVENTS - %i[withdrawn rejected declined withdrawn_at_candidates_request]).sample
         params = status_params.key?(status) ? status_params[status] : { status: status }
         application_choice.update(params)
 
@@ -214,7 +228,7 @@ RSpec.describe StateChangeNotifier do
       end
 
       it 'other applications have been declined, declined_by_default, rejected, rejected_by_default and withdrawn' do
-        status = (StateChangeNotifier::APPLICATION_OUTCOME_EVENTS - %i[withdrawn rejected rejected_by_default declined declined_by_default]).sample
+        status = (StateChangeNotifier::APPLICATION_OUTCOME_EVENTS - %i[withdrawn rejected rejected_by_default declined declined_by_default withdrawn_at_candidates_request]).sample
         params = status_params.key?(status) ? status_params[status] : { status: status }
         application_choice.update(params)
 
@@ -227,6 +241,18 @@ RSpec.describe StateChangeNotifier do
         StateChangeNotifier.new(status.to_sym, application_choice).application_outcome_notification
 
         message = /.+#{applicant} previously declined an offer from #{declined_choice.provider.name}, declined by default an offer from #{declined_by_default_choice.provider.name}, withdrew from #{withdrawn_choice.provider.name}, was rejected by #{rejected_choice.provider.name}, and was rejected by default from #{rejected_by_default_choice.provider.name}/
+        expect(SlackNotificationWorker).to have_received(:perform_async).with(message, anything)
+      end
+
+      it 'other applications have been withdrawn at the candidate\'s request' do
+        application_choice.update(status: 'rejected')
+
+        create(:withdrawn_at_candidates_request_audit, application_choice: declined_choice, comment: 'Declined on behalf of the candidate')
+        create(:withdrawn_at_candidates_request_audit, application_choice: withdrawn_choice)
+
+        StateChangeNotifier.new(:rejected, application_choice).application_outcome_notification
+
+        message = /:broken_heart: #{applicant}'s application was rejected by #{application_choice.provider.name}. #{applicant} previously requested that their applications be withdrawn from #{withdrawn_choice.provider.name} and #{declined_choice.provider.name}/
         expect(SlackNotificationWorker).to have_received(:perform_async).with(message, anything)
       end
 

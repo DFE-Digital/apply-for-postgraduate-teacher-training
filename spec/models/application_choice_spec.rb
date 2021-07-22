@@ -282,4 +282,19 @@ RSpec.describe ApplicationChoice, type: :model do
       end
     end
   end
+
+  describe '#withdrawn_at_candidates_request?' do
+    it 'is false when the application has been withdrawn by the candidate' do
+      application_choice = build_stubbed(:application_choice, :withdrawn)
+
+      expect(application_choice.withdrawn_at_candidates_request?).to be false
+    end
+
+    it 'is true when the application has been withdrawn at the candidate\'s request' do
+      application_choice = build_stubbed(:application_choice, :withdrawn)
+      create(:withdrawn_at_candidates_request_audit, application_choice: application_choice)
+
+      expect(application_choice.withdrawn_at_candidates_request?).to be true
+    end
+  end
 end

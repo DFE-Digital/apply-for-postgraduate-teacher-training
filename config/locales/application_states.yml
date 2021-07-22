@@ -69,6 +69,12 @@ en:
     withdrawn: Application withdrawn
     conditions_not_met: Conditions not met
     offer_deferred: Deferred
+  transient_application_states:
+    withdrawn_at_candidates_request:
+      declined:
+        audit_comment: Declined on behalf of the candidate
+      withdrawn:
+        audit_comment: Withdrawn on behalf of the candidate
 
   performance_dashboard_other_metrics:
     apply_again_submitted:

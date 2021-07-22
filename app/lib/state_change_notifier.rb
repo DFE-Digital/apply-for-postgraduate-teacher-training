@@ -1,5 +1,5 @@
 class StateChangeNotifier
-  APPLICATION_OUTCOME_EVENTS = %i[declined declined_by_default withdrawn rejected rejected_by_default recruited].freeze
+  APPLICATION_OUTCOME_EVENTS = %i[declined declined_by_default withdrawn rejected rejected_by_default recruited withdrawn_at_candidates_request].freeze
 
   attr_reader :application_choice, :event
 
@@ -103,6 +103,7 @@ private
     applications.inject(APPLICATION_OUTCOME_EVENTS.index_with { |_| [] }) do |grouped, application|
       status = :rejected_by_default if application.rejected? && application.rejected_by_default?
       status = :declined_by_default if application.declined? && application.declined_by_default?
+      status = :withdrawn_at_candidates_request if application.withdrawn_at_candidates_request?
       status ||= application.status.to_sym
 
       grouped[status] << application if grouped.key?(status)

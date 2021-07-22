@@ -21,6 +21,14 @@ en:
           one: ":runner: %{applicant} withdrew their application from %{providers}"
           other: ":runner: %{applicant} withdrew their applications from %{providers}"
         other_applications: "withdrew from %{providers}"
+    withdrawn_at_candidates_request:
+      message:
+        primary:
+          one: ":runner: %{applicant} requested that their application be withdrawn from %{providers}"
+          other: ":runner: %{applicant} requested that their applications be withdrawn from %{providers}"
+        other_applications:
+          one: "requested that their application be withdrawn from %{providers}"
+          other: "requested that their applications be withdrawn from %{providers}"
     recruited:
       message:
         primary: ":handshake: %{applicant} was recruited to %{providers}"

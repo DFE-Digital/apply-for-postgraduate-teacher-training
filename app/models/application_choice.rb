@@ -174,6 +174,17 @@ class ApplicationChoice < ApplicationRecord
     unconditional_offer?
   end
 
+  def withdrawn_at_candidates_request?
+    (declined? || withdrawn?) && Audited::Audit.exists?(
+      user_type: 'ProviderUser',
+      auditable: self,
+      comment: [
+        I18n.t('transient_application_states.withdrawn_at_candidates_request.declined.audit_comment'),
+        I18n.t('transient_application_states.withdrawn_at_candidates_request.withdrawn.audit_comment'),
+      ],
+    )
+  end
+
 private
 
   def set_initial_status
