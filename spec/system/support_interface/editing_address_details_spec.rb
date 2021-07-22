@@ -79,8 +79,8 @@ RSpec.feature 'Editing address' do
 
   def when_i_complete_the_details_form
     find(:css, "[autocomplete='address-line1']").fill_in with: '42 Much Wow Street'
-    fill_in t('application_form.contact_details.address_line3.uk.label'), with: 'London'
-    fill_in t('application_form.contact_details.postcode.uk.label'), with: 'SW1P 3BT'
+    fill_in t('application_form.contact_details.address_line3.label.uk'), with: 'London'
+    fill_in t('application_form.contact_details.postcode.label.uk'), with: 'SW1P 3BT'
     fill_in 'support_interface_application_forms_edit_address_details_form[audit_comment]', with: 'Updated as part of Zen Desk ticket #12345'
   end
 
@@ -107,7 +107,7 @@ RSpec.feature 'Editing address' do
 
   def then_i_should_see_the_international_address_details_form
     expect(page).to have_content('What is the candidate’s address?')
-    expect(page).to have_content('Address 1')
+    expect(page).to have_content('Address line 1')
   end
 
   def then_i_should_see_blank_error_messages

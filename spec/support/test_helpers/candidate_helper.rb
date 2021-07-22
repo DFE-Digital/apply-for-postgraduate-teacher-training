@@ -226,8 +226,8 @@ module CandidateHelper
     choose 'In the UK'
     click_button t('save_and_continue')
     find(:css, "[autocomplete='address-line1']").fill_in with: '42 Much Wow Street'
-    fill_in t('application_form.contact_details.address_line3.uk.label'), with: 'London'
-    fill_in t('application_form.contact_details.postcode.uk.label'), with: 'SW1P 3BT'
+    fill_in t('application_form.contact_details.address_line3.label.uk'), with: 'London'
+    fill_in t('application_form.contact_details.postcode.label.uk'), with: 'SW1P 3BT'
     click_button t('save_and_continue')
 
     choose t('application_form.completed_radio')

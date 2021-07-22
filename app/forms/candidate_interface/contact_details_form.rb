@@ -68,7 +68,7 @@ module CandidateInterface
     end
 
     def label_for(attr)
-      I18n.t("application_form.contact_details.#{attr}.#{address_type}.label")
+      I18n.t("application_form.contact_details.#{attr}.label.#{address_type}")
     end
   end
 end

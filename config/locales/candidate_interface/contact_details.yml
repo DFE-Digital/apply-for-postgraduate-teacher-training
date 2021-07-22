@@ -9,31 +9,26 @@ en:
         label: Address
         change_action: address
       address_line1:
-        uk:
-          label: Building and street
-        international:
-          label: Address 1
+        label:
+          uk: Building and street
+          international: Address line 1
         hidden: line 1 of 2
       address_line2:
-        uk:
-          label: Building and street line 2 of 2
-        international:
-          label: Address 2
+        label:
+          uk: Building and street line 2 of 2
+          international: Address line 2
       address_line3:
-        uk:
-          label: Town or city
-        international:
-          label: Address 3
+        label:
+          uk: Town or city
+          international: Address line 3
       address_line4:
-        uk:
-          label: County
-        international:
-          label: Address 4
+        label:
+          uk: County
+          international: Address line 4
       postcode:
-        uk:
-          label: Postcode
-        international:
-          label: ZIP or postal code
+        label:
+          uk: Postcode
+          international: ZIP or postal code
       address_type:
         label: Where do you live?
         change_action: where I live
