@@ -13,7 +13,7 @@
   <p class="govuk-body"><%= t('.explanation') %></p>
 
   <% ProviderRelationshipPermissions::PERMISSIONS.each do |permission_name| %>
-    <div class="govuk-form-group">
+    <div class="govuk-form-group" data-qa="<%= permission_name.to_s.dasherize %>">
       <%= f.govuk_check_boxes_fieldset permission_name, legend: { text: label_for(permission_name) } do %>
         <% presenter.checkbox_details_for_providers.each_with_index do |checkbox_details, index| %>
           <%= f.govuk_check_box(

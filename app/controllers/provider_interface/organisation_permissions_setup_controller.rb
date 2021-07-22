@@ -49,11 +49,7 @@ module ProviderInterface
 
     def check
       wizard = OrganisationPermissionsSetupWizard.new(organisation_permissions_wizard_store, current_step: :check)
-      permission_setup_presenter = ProviderRelationshipPermissionSetupPresenter.new(
-        wizard.relationships,
-        current_provider_user,
-      )
-      @grouped_relationships_by_name = permission_setup_presenter.grouped_provider_permissions_by_name
+      @relationships = wizard.relationships
       @previous_page_path = previous_page_path(wizard)
     end
 

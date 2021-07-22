@@ -23,9 +23,9 @@ RSpec.describe ProviderInterface::OrganisationPermissionsSetupCheckComponent do
 
   context 'when there are only relationships from a single provider' do
     let(:current_provider_user) { create(:provider_user, :with_provider) }
-    let(:relationships) { create_list(:provider_relationship_permissions, 2, training_provider:current_provider_user.providers.first) }
+    let(:relationships) { create_list(:provider_relationship_permissions, 2, training_provider: current_provider_user.providers.first) }
 
-    it 'should not render the provider name' do
+    it 'does not render the provider name' do
       expect(render.css('h2.govuk-heading-m')).to be_empty
     end
   end

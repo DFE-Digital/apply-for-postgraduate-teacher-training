@@ -46,8 +46,8 @@ module ProviderInterface
 
   private
 
-    def build_relationship_for_id(id)
-      relationship = ProviderRelationshipPermissions.find(id)
+    def build_relationship_for_id(relationship_id)
+      relationship = ProviderRelationshipPermissions.find(relationship_id)
       assign_wizard_attrs_to_relationship(relationship)
       relationship
     end
@@ -59,7 +59,7 @@ module ProviderInterface
 
     def previous_relationship_id
       previous_relationship_index = relationship_ids.find_index(current_relationship_id.to_i) - 1
-      return nil if previous_relationship_index < 0
+      return nil if previous_relationship_index.negative?
 
       relationship_ids[previous_relationship_index]
     end
