@@ -901,6 +901,8 @@ Rails.application.routes.draw do
       post '/record-ucas-withdrawal-requested' => 'ucas_matches#record_ucas_withdrawal_requested', as: :record_ucas_withdrawal_requested
     end
 
+    get '/duplicate-candidate-matches' => 'duplicate_candidate_matches#index', as: :duplicate_candidate_matches
+
     get '/application_choices/:application_choice_id' => redirect('/application-choices/%{application_choice_id}')
     get '/application-choices/:application_choice_id' => 'application_choices#show', as: :application_choice
     get '/application-choices/:application_choice_id/conditions' => 'application_choice_conditions#edit', as: :edit_application_choice_conditions

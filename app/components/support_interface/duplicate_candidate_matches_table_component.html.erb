@@ -1,0 +1,42 @@
+<table class="govuk-table">
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">Candidate ID</th>
+      <th scope="col" class="govuk-table__header">First name</th>
+      <th scope="col" class="govuk-table__header">Last name</th>
+      <th scope="col" class="govuk-table__header">Date of birth</th>
+      <th scope="col" class="govuk-table__header">Postcode</th>
+      <th scope="col" class="govuk-table__header">Email address</th>
+    </tr>
+  </thead>
+
+  <tbody class="govuk-table__body">
+    <% table_rows.each do |table_row| %>
+      <tr class="govuk-table__row">
+        <td class="govuk-table__cell">
+          <%= table_row[:candidate_id] %>
+        </td>
+
+        <td class="govuk-table__cell">
+          <%= table_row[:first_name] %>
+        </td>
+
+        <td class="govuk-table__cell">
+          <%= table_row[:last_name] %>
+        </td>
+
+        <td class="govuk-table__cell">
+          <%= table_row[:date_of_birth] %>
+        </td>
+
+        <td class="govuk-table__cell">
+          <%= table_row[:postcode] %>
+        </td>
+
+        <td class="govuk-table__cell">
+          <%= table_row[:email_address] %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

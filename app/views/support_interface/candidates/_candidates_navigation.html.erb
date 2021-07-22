@@ -5,6 +5,7 @@
   { name: 'Applications', url: support_interface_applications_path, current: local_assigns[:current] == 'Applications' },
   { name: 'Candidate accounts', url: support_interface_candidates_path, current: local_assigns[:current] == 'Candidates' },
   { name: 'UCAS matches', url: support_interface_ucas_matches_path(years: RecruitmentCycle.current_year), current: local_assigns[:current] == 'UCAS matches' },
+  { name: 'Duplicate applications', url: support_interface_duplicate_candidate_matches_path(years: RecruitmentCycle.current_year), current: local_assigns[:current] == 'Duplicate applications' },
 ]) %>
 
 <h2 class="govuk-visually-hidden"><%= title %></h2>
