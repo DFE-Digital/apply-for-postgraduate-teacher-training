@@ -30,14 +30,6 @@ module ProviderInterface
       t('provider_relationship_permissions.question', permission_description: permission_description.downcase)
     end
 
-    def form_method
-      if mode == :edit
-        :patch
-      elsif mode == :setup
-        :post
-      end
-    end
-
     class PermissionFormModel
       include ActiveModel::Model
 

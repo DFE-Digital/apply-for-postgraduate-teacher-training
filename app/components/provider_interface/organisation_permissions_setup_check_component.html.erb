@@ -1,0 +1,12 @@
+<% grouped_relationships_by_name.each do |main_provider_name, relationship_list| %>
+  <% if multiple_providers_to_set_up? %>
+    <h2 class="govuk-heading-m"><%= main_provider_name %></h2>
+  <% end %>
+  <% relationship_list.each do |relationship| %>
+    <%= render ProviderInterface::OrganisationPermissionsReviewCardComponent.new(
+      provider_user: current_provider_user,
+      provider_relationship_permission: relationship,
+      change_path: edit_provider_interface_organisation_permissions_setup_path(relationship, checking_answers: true),
+    ) %>
+  <% end %>
+<% end %>

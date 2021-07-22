@@ -1,5 +1,7 @@
 module ProviderInterface
   class OrganisationPermissionsController < ProviderInterfaceController
+    include ProviderRelationshipPermissionsParamsHelper
+
     before_action :require_accredited_provider_setting_permissions_flag
     before_action :set_up_relationship_objects, except: %i[organisations index]
     before_action :organisation_id_and_permission_check, except: %i[organisations index]
@@ -48,11 +50,7 @@ module ProviderInterface
     end
 
     def new_relationship_permissions
-      ProviderRelationshipPermissions::PERMISSIONS.inject({}) do |hash, permission|
-        hash["training_provider_can_#{permission}"] = permissions_params[permission].include? 'training'
-        hash["ratifying_provider_can_#{permission}"] = permissions_params[permission].include? 'ratifying'
-        hash
-      end
+      translate_params_for_model(permissions_params)
     end
 
     def set_up_relationship_objects

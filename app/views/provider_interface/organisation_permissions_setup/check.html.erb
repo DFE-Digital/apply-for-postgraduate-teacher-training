@@ -1,0 +1,10 @@
+<% content_for :browser_title, t('.title') %>
+<% content_for :before_content, govuk_back_link_to(@previous_page_path) %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <span class="govuk-caption-l"><%= t('.caption') %></span>
+    <h1 class="govuk-heading-l"><%= t('.title') %></h1>
+    <%= render ProviderInterface::OrganisationPermissionsSetupCheckComponent.new(relationships: @relationships, current_provider_user: current_provider_user) %>
+  </div>
+</div>

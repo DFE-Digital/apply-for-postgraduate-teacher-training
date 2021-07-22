@@ -1,0 +1,13 @@
+<% content_for :browser_title, title_with_error_prefix(current_relationship_description, @current_relationship.errors.any?) %>
+<% content_for :before_content, govuk_back_link_to(@previous_page_path) %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= render ProviderInterface::OrganisationPermissionsFormComponent.new(
+      provider_user: current_provider_user,
+      provider_relationship_permission: @current_relationship,
+      mode: :setup,
+      form_url: provider_interface_organisation_permissions_setup_path(@current_relationship),
+    ) %>
+  </div>
+</div>

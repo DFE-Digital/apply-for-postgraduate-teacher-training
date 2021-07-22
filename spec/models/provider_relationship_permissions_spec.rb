@@ -25,6 +25,13 @@ RSpec.describe ProviderRelationshipPermissions do
       it 'skips validation' do
         expect(permissions.valid?).to be true
       end
+
+      context 'when the :setup context is used' do
+        it 'ensures at least one permission in each pair is active' do
+          expect(permissions.valid?(:setup)).to be false
+          expect(permissions.errors.attribute_names).to eq(%i[make_decisions])
+        end
+      end
     end
 
     context 'when at least one permission in each pair is active' do
