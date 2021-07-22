@@ -21,6 +21,18 @@ RSpec.describe CandidateInterface::DegreeYearForm, type: :model do
         )
       end
     end
+
+    it 'is invalid if the degree is incomplete and the award year is in the past' do
+      Timecop.freeze(Time.zone.local(2008, 1, 1)) do
+        degree_form = described_class.new(award_year: '1990')
+
+        degree_form.validate(:award_year)
+
+        expect(degree_form.errors.full_messages_for(:award_year)).to eq(
+          ['Award year Enter a year in the future'],
+        )
+      end
+    end
   end
 
   describe 'start year' do
