@@ -653,7 +653,7 @@ RSpec.describe ApplicationForm do
 
     context 'phase 2 application ended without success and apply 2 deadline has passed' do
       it 'returns true' do
-        Timecop.travel(CycleTimetable.apply_2_deadline) do
+        Timecop.travel(CycleTimetable.apply_2_deadline + 1.hour) do
           application_choice = build(:application_choice, :with_rejection)
           application_form = build(:application_form, phase: 'apply_2', application_choices: [application_choice])
 
@@ -664,7 +664,7 @@ RSpec.describe ApplicationForm do
 
     context 'phase 2 application ended without success and apply 2 deadline has not passed' do
       it 'returns false' do
-        Timecop.travel(CycleTimetable.apply_1_deadline) do
+        Timecop.travel(CycleTimetable.apply_1_deadline + 1.hour) do
           application_choice = build(:application_choice, :with_rejection)
           application_form = build(:application_form, phase: 'apply_2', application_choices: [application_choice])
 

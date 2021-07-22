@@ -5,7 +5,7 @@ RSpec.describe CandidateInterface::CarryOverInsetTextComponent do
 
   context 'application is unsuccessful and apply 2 deadline has passed' do
     it 'renders the component' do
-      Timecop.freeze(CycleTimetable.apply_2_deadline) do
+      Timecop.freeze(CycleTimetable.apply_2_deadline + 1.hour) do
         application_choice = build(:application_choice, :with_rejection)
         application_form = build(:completed_application_form, application_choices: [application_choice])
         result = render_inline(described_class.new(application_form: application_form))

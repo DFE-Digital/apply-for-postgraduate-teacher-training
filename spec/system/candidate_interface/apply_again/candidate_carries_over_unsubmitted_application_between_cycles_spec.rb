@@ -109,7 +109,7 @@ RSpec.feature 'Manually carry over unsubmitted applications' do
   end
 
   def then_i_can_see_that_i_need_to_select_courses_when_apply_reopens
-    expect(page).to have_content "You’ll be able to find courses in #{(CycleTimetable.find_reopens - Time.zone.today).to_i} days (#{CycleTimetable.find_reopens.to_s(:govuk_date)}). You can keep making changes to the rest of your application until then."
+    expect(page).to have_content "You’ll be able to find courses in #{(CycleTimetable.find_reopens.to_date - Time.zone.today).to_i} days (#{CycleTimetable.find_reopens.to_s(:govuk_date)}). You can keep making changes to the rest of your application until then."
     expect(page).not_to have_link 'Choose your courses'
   end
 end

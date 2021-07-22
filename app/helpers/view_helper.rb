@@ -100,7 +100,7 @@ module ViewHelper
   end
 
   def days_until_find_reopens
-    (CycleTimetable.find_reopens - Time.zone.today).to_i
+    (CycleTimetable.find_reopens.to_date - Time.zone.today).to_i
   end
 
   def percent_of(numerator, denominator)
