@@ -216,6 +216,32 @@ RSpec.describe PerformanceStatistics, type: :model do
     end
   end
 
+  describe '#withdrawn_at_candidates_request_count and #withdrawn_by_candidate_count' do
+    let(:declined_choice) { create(:application_choice, :declined, application_form: create(:application_form, recruitment_cycle_year: 2021)) }
+    let(:withdrawn_choice) { create(:application_choice, :withdrawn, application_form: create(:application_form, recruitment_cycle_year: 2021)) }
+    let!(:choice_withdrawn_by_candidate) { create(:application_choice, :withdrawn, application_form: create(:application_form, recruitment_cycle_year: 2021)) }
+    let!(:declined_audit) do
+      create(
+        :withdrawn_at_candidates_request_audit,
+        application_choice: declined_choice,
+        comment: 'Declined on behalf of the candidate',
+      )
+    end
+    let!(:withdrawn_audit) { create(:withdrawn_at_candidates_request_audit, application_choice: withdrawn_choice) }
+
+    it '#withdrawn_at_candidates_request_count returns a count of applications which have been declined or withdrawn at the candidates request' do
+      stats = PerformanceStatistics.new(2021)
+
+      expect(stats.withdrawn_at_candidates_request_count).to eq(2)
+    end
+
+    it '#withdrawn_by_candidate_count returns a count of applications which have been declined or withdrawn by the candidate' do
+      stats = PerformanceStatistics.new(2021)
+
+      expect(stats.withdrawn_by_candidate_count).to eq(1)
+    end
+  end
+
   def count_for_process_state(process_state)
     PerformanceStatistics.new(nil)[process_state]
   end
