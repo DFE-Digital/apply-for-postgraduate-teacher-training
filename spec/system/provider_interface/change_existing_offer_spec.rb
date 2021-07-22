@@ -41,6 +41,7 @@ RSpec.feature 'Provider changes an existing offer' do
 
     when_i_select_a_different_provider
     and_i_click_continue
+    then_i_can_only_select_valid_courses
 
     when_i_select_a_different_course
     and_i_click_continue
@@ -91,13 +92,15 @@ RSpec.feature 'Provider changes an existing offer' do
   def given_the_provider_user_can_offer_multiple_provider_courses
     @selected_provider = create(:provider, :with_signed_agreement)
     create(:provider_permissions, provider: @selected_provider, provider_user: provider_user, make_decisions: true)
-    courses = create_list(:course, 2, :open_on_apply, study_mode: :full_time_or_part_time, provider: @selected_provider, accredited_provider: ratifying_provider)
-    @selected_course = courses.sample
+    courses = create_list(:course, 3, :open_on_apply, study_mode: :full_time_or_part_time, provider: @selected_provider, accredited_provider: ratifying_provider)
+    @selected_course, @invalid_course, @unselected_course = courses.sample(3)
 
     course_options = [create(:course_option, :part_time, course: @selected_course),
                       create(:course_option, :full_time, course: @selected_course),
                       create(:course_option, :full_time, course: @selected_course),
                       create(:course_option, :part_time, course: @selected_course)]
+    create(:course_option, :full_time, course: @invalid_course, site_still_valid: false)
+    create(:course_option, :full_time, course: @unselected_course)
 
     create(
       :provider_relationship_permissions,
@@ -149,6 +152,11 @@ RSpec.feature 'Provider changes an existing offer' do
 
   def and_i_click_continue
     click_on t('continue')
+  end
+
+  def then_i_can_only_select_valid_courses
+    expect(page).not_to have_content(@invalid_course.name_and_code)
+    expect(page).to have_content(@selected_course.name_and_code)
   end
 
   def when_i_select_a_different_course

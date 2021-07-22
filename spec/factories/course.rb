@@ -65,5 +65,11 @@ FactoryBot.define do
         new_course.save
       end
     end
+
+    trait :with_valid_course_option do
+      after(:create) do |course|
+        create(:course_option, course: course)
+      end
+    end
   end
 end
