@@ -1,4 +1,4 @@
 <%= govuk_notification_banner(title: t('notification_banner.important')) do |notification_banner| %>
   <%= notification_banner.slot(:heading, text: "Applications for courses starting in the #{CycleTimetable.cycle_year_range(cycle_year)} academic year are closed") %>
-  <p class="govuk-body">Submit your application from 9am on <%= reopen_date %> for courses starting in the <%= CycleTimetable.cycle_year_range(cycle_year + 1) %> academic year.</p>
+  <p class="govuk-body">Submit your application from <%= reopen_date[:time] %> on <%= reopen_date[:date] %> for courses starting in the <%= CycleTimetable.cycle_year_range(cycle_year + 1) %> academic year.</p>
 <% end %>

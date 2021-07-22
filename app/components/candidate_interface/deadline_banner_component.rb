@@ -29,11 +29,17 @@ private
   end
 
   def apply_1_deadline
-    CycleTimetable.date(:apply_1_deadline).to_s(:govuk_date)
+    {
+      date: CycleTimetable.date(:apply_1_deadline).to_s(:govuk_date),
+      time: CycleTimetable.date(:apply_1_deadline).to_s(:govuk_time),
+    }
   end
 
   def apply_2_deadline
-    CycleTimetable.date(:apply_2_deadline).to_s(:govuk_date)
+    {
+      date: CycleTimetable.date(:apply_2_deadline).to_s(:govuk_date),
+      time: CycleTimetable.date(:apply_2_deadline).to_s(:govuk_time),
+    }
   end
 
   def application_form_recruitment_cycle_year

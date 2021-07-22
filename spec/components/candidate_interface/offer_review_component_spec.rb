@@ -13,7 +13,6 @@ RSpec.describe CandidateInterface::OfferReviewComponent do
            course_option: course_option,
            application_form: application_form)
   end
-  let(:find_closes) { CycleTimetable.find_closes(RecruitmentCycle.previous_year) }
 
   it 'renders component with correct values for the provider' do
     result = render_inline(described_class.new(course_choice: application_choice))
@@ -24,7 +23,7 @@ RSpec.describe CandidateInterface::OfferReviewComponent do
 
   context 'when Find is open' do
     it 'renders component with correct values for the course' do
-      Timecop.freeze(find_closes) do
+      Timecop.freeze(CycleTimetable.find_opens + 1.hour) do
         result = render_inline(described_class.new(course_choice: application_choice))
 
         expect(result.css('.govuk-summary-list__key').text).to include('Course')
@@ -38,7 +37,7 @@ RSpec.describe CandidateInterface::OfferReviewComponent do
 
   context 'when Find is closed' do
     it 'renders component with correct values for the course' do
-      Timecop.freeze(find_closes + 1.day) do
+      Timecop.freeze(CycleTimetable.find_closes) do
         result = render_inline(described_class.new(course_choice: application_choice))
 
         expect(result.css('.govuk-summary-list__key').text).to include('Course')

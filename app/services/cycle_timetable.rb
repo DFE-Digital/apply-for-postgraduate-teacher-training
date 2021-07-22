@@ -3,31 +3,31 @@ class CycleTimetable
   # The 2019 dates are made up so we can generate sensible test data
   CYCLE_DATES = {
     2019 => {
-      find_opens: Date.new(2018, 10, 6),
-      apply_opens: Date.new(2018, 10, 13),
-      apply_1_deadline: Date.new(2019, 8, 24),
-      apply_2_deadline: Date.new(2019, 9, 18),
-      find_closes: Date.new(2019, 10, 3),
+      find_opens: Time.zone.local(2018, 10, 6, 9),
+      apply_opens: Time.zone.local(2018, 10, 13, 9),
+      apply_1_deadline: Time.zone.local(2019, 8, 24, 18),
+      apply_2_deadline: Time.zone.local(2019, 9, 18, 18),
+      find_closes: Time.zone.local(2019, 10, 3),
     },
     2020 => {
-      find_opens: Date.new(2019, 10, 6),
-      apply_opens: Date.new(2019, 10, 13),
-      show_deadline_banner: Date.new(2020, 8, 1),
-      apply_1_deadline: Date.new(2020, 8, 24),
-      apply_2_deadline: Date.new(2020, 9, 18),
-      find_closes: Date.new(2020, 10, 3),
+      find_opens: Time.zone.local(2019, 10, 6, 9),
+      apply_opens: Time.zone.local(2019, 10, 13, 9),
+      show_deadline_banner: Time.zone.local(2020, 8, 1, 9),
+      apply_1_deadline: Time.zone.local(2020, 8, 24, 18),
+      apply_2_deadline: Time.zone.local(2020, 9, 18, 18),
+      find_closes: Time.zone.local(2020, 10, 3),
     },
     2021 => {
-      find_opens: Date.new(2020, 10, 6),
-      apply_opens: Date.new(2020, 10, 13),
-      show_deadline_banner: Date.new(2021, 8, 1),
-      apply_1_deadline: Date.new(2021, 9, 7),
-      apply_2_deadline: Date.new(2021, 9, 20),
-      find_closes: Date.new(2021, 10, 3),
+      find_opens: Time.zone.local(2020, 10, 6, 9),
+      apply_opens: Time.zone.local(2020, 10, 13, 9),
+      show_deadline_banner: Time.zone.local(2021, 8, 1, 9),
+      apply_1_deadline: Time.zone.local(2021, 9, 7, 18),
+      apply_2_deadline: Time.zone.local(2021, 9, 20, 18),
+      find_closes: Time.zone.local(2021, 10, 3),
     },
     2022 => {
-      find_opens: Date.new(2021, 10, 5),
-      apply_opens: Date.new(2021, 10, 12),
+      find_opens: Time.zone.local(2021, 10, 5, 9),
+      apply_opens: Time.zone.local(2021, 10, 12, 9),
     },
   }.freeze
 
@@ -50,13 +50,13 @@ class CycleTimetable
   end
 
   def self.show_apply_1_deadline_banner?(application_form)
-    Time.zone.now.between?(date(:show_deadline_banner), date(:apply_1_deadline).end_of_day) &&
+    Time.zone.now.between?(date(:show_deadline_banner), date(:apply_1_deadline)) &&
       application_form.phase == 'apply_1' &&
       !application_form.successful?
   end
 
   def self.show_apply_2_deadline_banner?(application_form)
-    Time.zone.now.between?(date(:show_deadline_banner), date(:apply_2_deadline).end_of_day) &&
+    Time.zone.now.between?(date(:show_deadline_banner), date(:apply_2_deadline)) &&
       (application_form.phase == 'apply_2' || application_form.phase == 'apply_1' && application_form.ended_without_success?)
   end
 
@@ -81,7 +81,11 @@ class CycleTimetable
   end
 
   def self.find_down?
-    Time.zone.now.between?(find_closes.end_of_day, find_reopens.beginning_of_day)
+    Time.zone.now.between?(find_closes, find_reopens)
+  end
+
+  def self.days_until_find_reopens
+    (find_reopens.to_date - Time.zone.today).to_i
   end
 
   def self.apply_opens(year = current_year)
@@ -109,13 +113,13 @@ class CycleTimetable
   end
 
   def self.between_cycles_apply_1?
-    Time.zone.now > apply_1_deadline.end_of_day &&
-      Time.zone.now < apply_reopens.beginning_of_day
+    Time.zone.now > apply_1_deadline &&
+      Time.zone.now < apply_reopens
   end
 
   def self.between_cycles_apply_2?
-    Time.zone.now > apply_2_deadline.end_of_day &&
-      Time.zone.now < apply_reopens.beginning_of_day
+    Time.zone.now > apply_2_deadline &&
+      Time.zone.now < apply_reopens
   end
 
   def self.date(name, year = current_year)
@@ -252,7 +256,7 @@ class CycleTimetable
   end
 
   def self.before_find_reopens?
-    return true if Time.zone.now.to_date <= find_reopens.beginning_of_day
+    return true if Time.zone.now.to_date <= find_reopens
 
     false
   end
@@ -273,20 +277,20 @@ class CycleTimetable
   def self.apply_1_deadline_has_passed?(application_form)
     recruitment_cycle_year = application_form.recruitment_cycle_year
 
-    Time.zone.now.to_date > apply_1_deadline(recruitment_cycle_year).beginning_of_day
+    Time.zone.now > apply_1_deadline(recruitment_cycle_year)
   end
 
   def self.apply_2_deadline_has_passed?(application_form)
     recruitment_cycle_year = application_form.recruitment_cycle_year
 
-    Time.zone.now.to_date > apply_2_deadline(recruitment_cycle_year).beginning_of_day
+    Time.zone.now > apply_2_deadline(recruitment_cycle_year)
   end
 
   private_class_method :last_recruitment_cycle_year?
 
   def self.need_to_send_deadline_reminder?
-    return :apply_1 if Time.zone.now.to_date == apply_1_deadline_first_reminder || Time.zone.now.to_date == apply_1_deadline_second_reminder
-    return :apply_2 if Time.zone.now.to_date == apply_2_deadline_first_reminder || Time.zone.now.to_date == apply_2_deadline_second_reminder
+    return :apply_1 if Time.zone.now.to_date == apply_1_deadline_first_reminder.to_date || Time.zone.now.to_date == apply_1_deadline_second_reminder.to_date
+    return :apply_2 if Time.zone.now.to_date == apply_2_deadline_first_reminder.to_date || Time.zone.now.to_date == apply_2_deadline_second_reminder.to_date
   end
 
   def self.cycle_year_range(year = current_year)

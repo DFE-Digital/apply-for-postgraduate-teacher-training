@@ -14,8 +14,8 @@ RSpec.describe CandidateInterface::ReopenBannerComponent do
       allow(CycleTimetable).to receive(:current_year).and_return(2021)
       allow(CycleTimetable).to receive(:cycle_year_range).with(2021).and_return('2021 to 2022')
       allow(CycleTimetable).to receive(:cycle_year_range).with(2022).and_return('2022 to 2023')
-      allow(CycleTimetable).to receive(:apply_opens).and_return(Date.new(2020, 10, 13))
-      allow(CycleTimetable).to receive(:apply_reopens).and_return(Date.new(2021, 10, 12))
+      allow(CycleTimetable).to receive(:apply_opens).and_return(Time.zone.local(2020, 10, 13, 9))
+      allow(CycleTimetable).to receive(:apply_reopens).and_return(Time.zone.local(2021, 10, 12, 9))
     end
 
     context 'before find reopens' do

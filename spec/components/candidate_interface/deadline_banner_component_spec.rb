@@ -32,7 +32,9 @@ RSpec.describe CandidateInterface::DeadlineBannerComponent, type: :component do
 
       result = render_inline(described_class.new(application_form: application_form, flash_empty: flash.empty?))
 
-      expect(result.text).to include("The deadline for applying to courses starting in the #{application_form.recruitment_cycle_year} to #{application_form.recruitment_cycle_year + 1} academic year is 6pm on #{CycleTimetable.date(:apply_1_deadline).to_s(:govuk_date)}")
+      expect(result.text).to include(
+        "The deadline for applying to courses starting in the #{academic_year} academic year is #{deadline_time(:apply_1_deadline)} on #{deadline_date(:apply_1_deadline)}",
+      )
     end
 
     it 'renders the Apply 2 banner when the right conditions are met' do
@@ -42,7 +44,21 @@ RSpec.describe CandidateInterface::DeadlineBannerComponent, type: :component do
 
       result = render_inline(described_class.new(application_form: application_form, flash_empty: flash.empty?))
 
-      expect(result.text).to include("The deadline for applying to courses starting in the #{application_form.recruitment_cycle_year} to #{application_form.recruitment_cycle_year + 1} academic year is 6pm on #{CycleTimetable.date(:apply_2_deadline).to_s(:govuk_date)}")
+      expect(result.text).to include(
+        "The deadline for applying to courses starting in the #{academic_year} academic year is #{deadline_time(:apply_2_deadline)} on #{deadline_date(:apply_2_deadline)}",
+      )
     end
+  end
+
+  def academic_year
+    "#{application_form.recruitment_cycle_year} to #{application_form.recruitment_cycle_year + 1}"
+  end
+
+  def deadline_time(deadline)
+    CycleTimetable.date(deadline).to_s(:govuk_time)
+  end
+
+  def deadline_date(deadline)
+    CycleTimetable.date(deadline).to_s(:govuk_date)
   end
 end

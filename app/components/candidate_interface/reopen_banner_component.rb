@@ -31,9 +31,15 @@ private
 
   def reopen_date
     if Time.zone.now < CycleTimetable.date(:apply_opens)
-      CycleTimetable.apply_opens.to_s(:govuk_date)
+      {
+        date: CycleTimetable.apply_opens.to_s(:govuk_date),
+        time: CycleTimetable.apply_opens.to_s(:govuk_time),
+      }
     else
-      CycleTimetable.apply_reopens.to_s(:govuk_date)
+      {
+        date: CycleTimetable.apply_reopens.to_s(:govuk_date),
+        time: CycleTimetable.apply_reopens.to_s(:govuk_time),
+      }
     end
   end
 

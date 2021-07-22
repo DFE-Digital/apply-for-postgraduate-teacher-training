@@ -1,4 +1,4 @@
 <%= govuk_notification_banner(title: t('notification_banner.important')) do |notification_banner| %>
-  <%= notification_banner.slot(:heading, text: "The deadline for applying to courses starting in the #{academic_year} academic year is 6pm on #{deadline}") %>
+  <%= notification_banner.slot(:heading, text: "The deadline for applying to courses starting in the #{academic_year} academic year is #{deadline[:time]} on #{deadline[:date]}") %>
   <p class="govuk-body">Courses may fill up before then. Check course availability with your provider.</p>
 <% end %>
