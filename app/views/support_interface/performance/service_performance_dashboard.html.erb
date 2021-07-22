@@ -223,6 +223,16 @@
         <td class="govuk-table__cell govuk-table__cell--numeric"><%= @statistics.rejected_by_default_count %></td>
         <td class="govuk-table__cell govuk-!-width-two-thirds"><%= t('performance_dashboard_other_metrics.rejected_by_default.description') %></td>
       </tr>
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header govuk-!-width-one-quarter"><%= t('performance_dashboard_other_metrics.withdrawn_at_candidates_request.name') %></th>
+        <td class="govuk-table__cell govuk-table__cell--numeric"><%= @statistics.withdrawn_at_candidates_request_count %></td>
+        <td class="govuk-table__cell govuk-!-width-two-thirds"><%= t('performance_dashboard_other_metrics.withdrawn_at_candidates_request.description') %></td>
+      </tr>
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header govuk-!-width-one-quarter"><%= t('performance_dashboard_other_metrics.withdrawn_by_candidate.name') %></th>
+        <td class="govuk-table__cell govuk-table__cell--numeric"><%= @statistics.withdrawn_by_candidate_count %></td>
+        <td class="govuk-table__cell govuk-!-width-two-thirds"><%= t('performance_dashboard_other_metrics.withdrawn_by_candidate.description') %></td>
+      </tr>
     </tbody>
   </table>
 

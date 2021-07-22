@@ -83,6 +83,12 @@ en:
     rejected_by_default:
       name: Rejected by default
       description: The candidate had one or more application choices rejected by default because the provider took too long to respond.
+    withdrawn_at_candidates_request:
+      name: Withdrawn at candidate's request
+      description: The candidate requested their application be withdrawn from the provider.
+    withdrawn_by_candidate:
+      name: Withdrawn by the candidate
+      description: The candidate withdrew their own application.
 
   application_states:
     unsubmitted:
