@@ -53,24 +53,6 @@ RSpec.describe ChangeOffer do
       end
     end
 
-    describe 'if the new offer is for a course not open on apply' do
-      let(:course_option) do
-        course_option_for_provider(
-          provider: application_choice.course_option.provider,
-          course: create(:course, provider: application_choice.course_option.provider, open_on_apply: false),
-        )
-      end
-
-      it 'raises a Course Validation Exception' do
-        expect {
-          change_offer.save!
-        }.to raise_error(
-          ValidationException,
-          'The requested course is not open for applications via the Apply service',
-        )
-      end
-    end
-
     describe 'if the provided details are correct' do
       let(:application_choice) { create(:application_choice, status: :awaiting_provider_decision) }
       let(:provider_user) do
