@@ -29,6 +29,19 @@ RSpec.describe ProviderInterface::ProviderRelationshipPermissionSetupPresenter d
     end
   end
 
+  describe '#grouped_provider_permissions_by_name' do
+    it 'returns a hash with the main provider names as keys sorted alphabetically' do
+      sorted_names = [provider_1.name, provider_2.name].sort
+      expect(presenter.grouped_provider_permissions_by_name.keys).to eq(sorted_names)
+    end
+
+    it 'returns a hash with the sorted provider relationships as values' do
+      grouped_provider_permissions_by_name = presenter.grouped_provider_permissions_by_name
+      expect(grouped_provider_permissions_by_name[provider_1.name]).to eq([org_permissions_list.second, org_permissions_list.first])
+      expect(grouped_provider_permissions_by_name[provider_2.name]).to contain_exactly(org_permissions_list.last)
+    end
+  end
+
   describe '#sorted_provider_permission_ids' do
     it 'returns the ids of the permissions objects sorted by main provider name and then by other provider name' do
       expect(presenter.sorted_provider_permission_ids).to eq([
