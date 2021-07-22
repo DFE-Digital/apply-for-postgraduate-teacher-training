@@ -1,13 +1,15 @@
 <nav class="app-tab-navigation" aria-label="sub menu" data-qa="sub-navigation">
   <ul class="app-tab-navigation__list govuk-!-display-none-print">
     <% items.each do |item| %>
-      <li class="app-tab-navigation__item">
-        <% if item.fetch(:current, false) || current_page?(strip_query(item.fetch(:url))) %>
+      <% if item.fetch(:current, false) || current_page?(strip_query(item.fetch(:url))) %>
+        <li class="app-tab-navigation__item app-tab-navigation__item--current">
           <%= govuk_link_to item[:name], item[:url], class: 'app-tab-navigation__link', aria: { current: 'page' } %>
-        <% else %>
+        </li>
+      <% else %>
+        <li class="app-tab-navigation__item">
           <%= govuk_link_to item[:name], item[:url], class: 'app-tab-navigation__link' %>
-        <% end %>
-      </li>
+        </li>
+      <% end %>
     <% end %>
   </ul>
 </nav>

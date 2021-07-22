@@ -3,13 +3,15 @@
     <nav class="app-primary-navigation__nav" aria-label="main menu">
       <ul class="app-primary-navigation__list">
         <% items.each do |item| %>
-          <li class="app-primary-navigation__item <%= item.classes %>">
-            <% if item.active %>
+          <% if item.active %>
+            <li class="app-primary-navigation__item app-primary-navigation__item--current <%= item.classes %>">
               <%= govuk_link_to item.text, item.href, class: 'app-primary-navigation__link', aria: { current: 'page' } %>
-            <% else %>
+            </li>
+          <% else %>
+            <li class="app-primary-navigation__item <%= item.classes %>">
               <%= govuk_link_to item.text, item.href, class: 'app-primary-navigation__link' %>
-            <% end %>
-          </li>
+            </li>
+          <% end %>
         <% end %>
       </ul>
     </nav>
