@@ -8,8 +8,8 @@ Submit your application as soon as you can to get on a course starting in the <%
 
 <%= candidate_magic_link(@application_form.candidate) %>
 
-<% apply_1_copy =  "The deadline to submit your application is 6pm on #{CycleTimetable.apply_1_deadline.to_s(:govuk_date)} but courses may fill up before then." %>
-<% apply_2_copy =  "The deadline to submit your application is 6pm on #{CycleTimetable.apply_2_deadline.to_s(:govuk_date)} but courses may fill up before then." %>
+<% apply_1_copy =  "The deadline to submit your application is #{CycleTimetable.date(:apply_1_deadline).to_s(:govuk_time)} on #{CycleTimetable.apply_1_deadline.to_s(:govuk_date)} but courses may fill up before then." %>
+<% apply_2_copy =  "The deadline to submit your application is #{CycleTimetable.date(:apply_2_deadline).to_s(:govuk_time)} on #{CycleTimetable.apply_2_deadline.to_s(:govuk_date)} but courses may fill up before then." %>
 
 <%= apply_1_copy if @application_form.phase == 'apply_1' %>
 <%= apply_2_copy if @application_form.phase == 'apply_2' %>
