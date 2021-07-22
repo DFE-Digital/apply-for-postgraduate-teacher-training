@@ -144,3 +144,4 @@ en:
               blank: Enter your graduation year
               invalid_year: Enter a real graduation year
               greater_than_limit: Enter a year before %{date}
+              in_the_future: Enter a year in the future
