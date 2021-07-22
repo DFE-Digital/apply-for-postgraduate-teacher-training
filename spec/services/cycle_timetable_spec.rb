@@ -10,6 +10,7 @@ RSpec.describe CycleTimetable do
   let(:one_hour_before_find_closes) { CycleTimetable.find_closes(2020) - 1.hour }
   let(:one_hour_after_find_closes) { CycleTimetable.find_closes(2020) + 1.hour }
   let(:one_hour_after_find_opens) { CycleTimetable.find_opens(2020) + 1.hour }
+  let(:three_days_before_find_reopens) { CycleTimetable.find_reopens(2020) - 3.days }
 
   describe '.current_year' do
     it 'is 2020 if we are in the middle of the 2020 cycle' do
@@ -157,6 +158,14 @@ RSpec.describe CycleTimetable do
     it 'returns true between find_closes and find_reopens' do
       Timecop.travel(one_hour_after_find_closes) do
         expect(CycleTimetable.find_down?).to be true
+      end
+    end
+  end
+
+  describe '.days_until_find_reopens' do
+    it 'returns the number of days until Find reopens' do
+      Timecop.travel(three_days_before_find_reopens) do
+        expect(CycleTimetable.days_until_find_reopens).to eq(3)
       end
     end
   end

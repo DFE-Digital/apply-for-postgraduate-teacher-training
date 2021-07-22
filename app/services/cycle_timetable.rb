@@ -84,6 +84,10 @@ class CycleTimetable
     Time.zone.now.between?(find_closes, find_reopens)
   end
 
+  def self.days_until_find_reopens
+    (find_reopens.to_date - Time.zone.today).to_i
+  end
+
   def self.apply_opens(year = current_year)
     date(:apply_opens, year)
   end

@@ -66,7 +66,7 @@ RSpec.describe 'Candidate vists their application form after the cycle has ended
   end
 
   def then_i_see_that_i_can_add_new_course_choices_in_october
-    expect(page).to have_content "You’ll be able to find courses in #{(CycleTimetable.find_reopens.to_date - Time.zone.today).to_i} days (#{CycleTimetable.find_reopens.to_s(:govuk_date)}). You can keep making changes to the rest of your application until then."
+    expect(page).to have_content "You’ll be able to find courses in #{CycleTimetable.days_until_find_reopens} days (#{CycleTimetable.find_reopens.to_s(:govuk_date)}). You can keep making changes to the rest of your application until then."
   end
 
   def and_there_is_not_a_link_to_the_course_choices_section
